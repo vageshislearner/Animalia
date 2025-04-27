@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About Us - Animalia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Modern Base Styles */
+    :root {
+      --primary: #4361ee;
+      --secondary: #3a0ca3;
+      --accent: #f72585;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --text: #495057;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      background: white;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Animated Navigation */
+    header {
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+      top: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .logo:hover {
+      color: var(--secondary);
+    }
+    
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+    
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-links a.active {
+      color: var(--primary);
+    }
+    
+    .nav-links a:after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-links a:hover:after {
+      width: 100%;
+    }
+    
+    /* Animated Hero Section */
+    .hero-about {
+      height: 80vh;
+      background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), 
+                  url('images/hero-dog.jpg') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      margin-top: 80px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s ease 0.3s forwards;
+    }
+    
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Typography Hierarchy */
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s ease 0.6s forwards;
+    }
+    
+    h2 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
+    h2:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: var(--primary);
+      transform-origin: left;
+      transform: scaleX(0);
+      animation: growIn 0.8s ease 1s forwards;
+    }
+    
+    @keyframes growIn {
+      to {
+        transform: scaleX(1);
+      }
+    }
+    
+    h3 {
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: var(--dark);
+      margin-bottom: 1rem;
+    }
+    
+    /* Animated About Content Layout */
+    .about-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      align-items: center;
+      margin: 80px 0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease;
+    }
+    
+    .about-container.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .about-text, .about-image {
+      flex: 1;
+      min-width: 300px;
+    }
+    
+    .about-image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    
+    .about-image img:hover {
+      transform: scale(1.02);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    
+    /* Animated Mission/Vision/Values Grid */
+    .mv-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin: 60px 0;
+    }
+    
+    .mv-card {
+      background: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: all 0.5s ease;
+      border-top: 4px solid var(--primary);
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    
+    .mv-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .mv-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    
+    .mv-card i {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 20px;
+      transition: transform 0.5s ease;
+    }
+    
+    .mv-card:hover i {
+      transform: scale(1.2);
+    }
+    
+    /* Modern Footer */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 60px 0 30px;
+      margin-top: 60px;
+    }
+    
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    
+    .footer-column h3 {
+      color: white;
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .footer-column h3:after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--primary);
+    }
+    
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+    
+    .footer-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+      padding-left: 5px;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .social-links a:hover {
+      background: var(--primary);
+      transform: translateY(-3px);
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      
+      h2 {
+        font-size: 2rem;
+      }
+      
+      .navbar {
+        flex-direction: column;
+        padding: 15px 0;
+      }
+      
+      .nav-links {
+        margin-top: 15px;
+        gap: 20px;
+      }
+      
+      .about-container {
+        flex-direction: column;
+      }
+      
+      .about-text, .about-image {
+        width: 100%;
+      }
+      
+      .mv-card {
+        margin-bottom: 30px;
+      }
+      
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="navbar">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="logo">Animalia</a>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="#" class="active">About</a></li>
+          <li><a href="adopt.html">Adoption</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero-about">
+    <div class="container">
+      <h1>Our Compassionate Mission</h1>
+      <p style="opacity: 0; transform: translateY(20px); animation: fadeInUp 0.8s ease 0.9s forwards;">
+        Dedicated to creating a world where every animal receives the love and care they deserve
+      </p>
+    </div>
+  </section>
+
+  <div class="container">
+    <section class="about-container" id="story-section">
+      <div class="about-text">
+        <h2>Our Story</h2>
+        <p>Founded in 2010, Animalia Rescue began as a small group of animal lovers determined to make a difference. What started as a grassroots effort has grown into a comprehensive animal welfare organization serving our entire region.</p>
+        <p>Our journey has been marked by countless rescues, heartwarming adoptions, and an ever-growing community of supporters who share our vision for a more compassionate world.</p>
+      </div>
+      <div class="about-image">
+        <img src="images/dog1.avif" alt="Our rescue team in action">
+      </div>
+    </section>
+
+    <section class="about-container" id="facility-section">
+      <div class="about-image">
+        <img src="images/fac.jpg" alt="Our animal care facility">
+      </div>
+      <div class="about-text">
+        <h2>Our Facility</h2>
+        <p>In 2018, we opened our state-of-the-art animal care facility, designed specifically to provide a comfortable, stress-free environment for animals in transition.</p>
+        <p>The facility includes medical suites, rehabilitation areas, and spacious living quarters that help animals recover and prepare for their forever homes.</p>
+      </div>
+    </section>
+
+    <section id="principles-section">
+      <h2 class="text-center">Our Core Principles</h2>
+      <div class="mv-grid">
+        <div class="mv-card" id="mission-card">
+          <i class="fas fa-heart"></i>
+          <h3>Mission</h3>
+          <p>To rescue, rehabilitate, and rehome animals in need while promoting compassion through community education.</p>
+        </div>
+        
+        <div class="mv-card" id="vision-card">
+          <i class="fas fa-eye"></i>
+          <h3>Vision</h3>
+          <p>A world where every animal is valued and protected, and no pet suffers from neglect or abandonment.</p>
+        </div>
+        
+        <div class="mv-card" id="values-card">
+          <i class="fas fa-star"></i>
+          <h3>Values</h3>
+          <p>Compassion, Integrity, Innovation, and Community guide every decision we make.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-container">
+        <div class="footer-column">
+          <h3>About Us</h3>
+          <p>Animalia is dedicated to rescuing and rehabilitating animals in need. Join us in making a difference in the lives of animals.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="adopt.html">Adoption Process</a></li>
+            <li><a href="donate.html">Ways to Give</a></li>
+            <li><a href="vop.html">Volunteer</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Contact Info</h3>
+          <ul class="footer-links">
+            <li><i class="fas fa-map-marker-alt"></i> Rescue Way, online</li>
+            <li><i class="fas fa-phone"></i> +91 9898986565</li>
+            <li><i class="fas fa-envelope"></i> info@animalia.org</li>
+            <li><i class="fas fa-clock"></i> Mon-Fri: 9AM-5PM</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 Animalia Rescue. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll animations
+    document.addEventListener('DOMContentLoaded', function() {
+      // Navbar scroll effect
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+          navbar.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)';
+          navbar.style.padding = '10px 0';
+        } else {
+          navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+          navbar.style.padding = '20px 0';
+        }
+      });
+      
+      // Intersection Observer for scroll animations
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            
+            // Stagger animations for MV cards
+            if (entry.target.id === 'principles-section') {
+              setTimeout(() => {
+                document.getElementById('mission-card').style.transitionDelay = '0s';
+                document.getElementById('vision-card').style.transitionDelay = '0.2s';
+                document.getElementById('values-card').style.transitionDelay = '0.4s';
+              }, 300);
+            }
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      // Observe elements
+      const sections = [
+        document.getElementById('story-section'),
+        document.getElementById('facility-section'),
+        document.getElementById('principles-section'),
+        document.getElementById('mission-card'),
+        document.getElementById('vision-card'),
+        document.getElementById('values-card')
+      ];
+      
+      sections.forEach(section => {
+        if (section) observer.observe(section);
+      });
+    });
+  </script>
+</body>
+</html>

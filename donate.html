@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Donate to Help Animals | Animalia</title>
+  <link rel="stylesheet" href="./style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Open+Sans&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* Modern Animal Card Styles */
+    .donation-hero {
+      background: 
+        linear-gradient(135deg, #74a3d1 0%, #2e86de 50%, #1a5b9e 100%);
+      color: white;
+      text-align: center;
+      padding: 150px 20px;
+      margin-bottom: 50px;
+      position: relative;
+      min-height: 400px;
+      animation: gradientShift 8s ease infinite;
+      background-size: 200% 200%;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .donation-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('images/rescue-pattern.png') center/cover;
+      opacity: 0.15;
+      z-index: 0;
+    }
+    
+    .donation-hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .donation-hero-content h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+      margin-bottom: 25px;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .donation-hero-content p {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      line-height: 1.6;
+      max-width: 700px;
+      margin: 0 auto 30px;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+      animation: fadeInUp 1s ease-out 0.2s forwards;
+      opacity: 0;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-cta {
+      display: inline-block;
+      background: #ff6b6b;
+      color: white;
+      padding: 15px 35px;
+      border-radius: 50px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+      animation: fadeInUp 1s ease-out 0.4s forwards;
+      opacity: 0;
+    }
+
+    .hero-cta:hover {
+      background: #ff5252;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+    }
+    
+    .donation-hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+    
+    .donation-hero p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+    
+    /* Updated Header Styles */
+    #header {
+      background: #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    
+    #header .logo {
+      color: #2e86de;
+      font-size: 1.8rem;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    
+    #header ul {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    #header ul li {
+      margin-left: 25px;
+    }
+    
+    #header ul li a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: color 0.3s;
+      padding: 8px 12px;
+      border-radius: 4px;
+    }
+    
+    #header ul li a:hover {
+      color: #2e86de;
+      background: #f1f8ff;
+    }
+    
+    #header ul li a.active {
+      color: white;
+      background: #2e86de;
+    }
+    
+    .animals-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
+    }
+    
+    .animal-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+    
+    .animal-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .animal-image-container {
+      position: relative;
+      height: 250px;
+      overflow: hidden;
+    }
+    
+    .animal-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.5s ease;
+    }
+    
+    .image-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 15px;
+    }
+    
+    .nav-btn {
+      background: rgba(255,255,255,0.7);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-btn:hover {
+      background: rgba(255,255,255,0.9);
+      transform: scale(1.1);
+    }
+    
+    .nav-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .animal-details {
+      padding: 20px;
+    }
+    
+    .animal-name {
+      font-size: 1.5rem;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    
+    .animal-condition {
+      display: inline-block;
+      background: #ff6b6b;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+    
+    .animal-description {
+      margin-bottom: 20px;
+      line-height: 1.6;
+      color: #555;
+      font-size: 0.95rem;
+    }
+    
+    .progress-container {
+      margin: 20px 0;
+    }
+    
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .progress-bar {
+      height: 8px;
+      background: #f0f0f0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4CAF50, #8BC34A);
+      width: 0%;
+      transition: width 1s ease;
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      padding: 60px 40px;
+      border-radius: 20px;
+      box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+      max-width: 900px;
+      width: 90%;
+      margin: 40px auto;
+    }
+    
+    .donation-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    
+    .donation-amount {
+      padding: 8px 15px;
+      background: #f8f9fa;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 2px solid #e0e0e0;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+    
+    .donation-amount:hover {
+      border-color: #2e86de;
+      background: #e1f0fa;
+    }
+    
+    .donation-amount.selected {
+      border-color: #2e86de;
+      background: #2e86de;
+      color: white;
+    }
+    
+    .custom-amount {
+      padding: 8px 12px;
+      border: 2px solid #2e86de;
+      border-radius: 5px;
+      width: 100%;
+      max-width: 150px;
+      font-size: 0.9rem;
+    }
+    
+    .donate-btn {
+      background: #2e86de;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+      width: 100%;
+      font-weight: 500;
+    }
+    
+    .donate-btn:hover {
+      background: #1a73e8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    /* Donation Input */
+    input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    input[type="number"]:focus {
+      border-color: #f542bf;
+      outline: none;
+    }
+
+    /* Amount Buttons */
+    .amount-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .amount-buttons button {
+      padding: 10px 15px;
+      border: none;
+      cursor: pointer;
+      background: #e0e0e0;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .amount-buttons button:hover,
+    .amount-buttons button.selected {
+      background: black;
+      color: white;
+      border: 2px solid #ff1493;
+    }
+
+    /* Donate Button */
+    .donate-btn {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background: #f542bf;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    .donate-btn:hover {
+      background: #ff1493;
+      box-shadow: 0px 4px 10px rgba(255, 20, 147, 0.5);
+    }
+
+    /* Image Box */
+    .image-box {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .image-box img {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    /* Tab Buttons */
+    .tab-buttons {
+      display: flex;
+      margin-bottom: 15px;
+      background: #f0f0f0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      cursor: pointer;
+      background: #f0f0f0;
+      font-size: 16px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .tab-btn.active {
+      background: black;
+      color: white;
+    }
+    .donation-box {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-top: 40px;
+    }
+    
+    /* Payment Modal Styles */
+    .payment-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      overflow-y: auto;
+    }
+
+    .payment-modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 20px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #2c3e50;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #666;
+      padding: 5px;
+    }
+
+    .progress-steps {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  margin: 0 auto;
+  max-width: 80%;
+}
+
+    .progress-steps::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 20%;
+      right: 20%;
+      height: 2px;
+      background: #eee;
+      z-index: 0;
+    }
+    .progress-line {
+  position: absolute;
+  top: 35%;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: #eee;
+  z-index: 0;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+    .step span {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #eee;
+      color: #999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .step p {
+      margin: 0;
+      font-size: 0.8rem;
+      color: #999;
+    }
+
+    .step.active span {
+      background: #2e86de;
+      color: white;
+    }
+
+    .step.active p {
+      color: #2e86de;
+      font-weight: 500;
+    }
+
+    .steps-container {
+      padding: 0 30px 30px;
+    }
+
+    .step-content {
+      display: none;
+    }
+
+    .step-content.active {
+      display: block;
+    }
+
+    .payment-methods {
+      display: flex;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .payment-method {
+      flex: 1;
+      border: 2px solid #eee;
+      border-radius: 8px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .payment-method img {
+      width: 50px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    .payment-method span {
+      font-weight: 500;
+    }
+
+    .payment-method.selected {
+      border-color: #2e86de;
+      background: #f5f9ff;
+    }
+
+    .next-step, .prev-step {
+      padding: 12px 25px;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .next-step {
+      background: #2e86de;
+      color: white;
+      border: none;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .next-step:hover {
+      background: #1a73e8;
+    }
+
+    .step-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .prev-step {
+      background: white;
+      border: 1px solid #ddd;
+      flex: 1;
+    }
+
+    .prev-step:hover {
+      background: #f5f5f5;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    /* UPI and QR Payment Styles */
+    .upi-payment .note {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.qr-code-container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.qr-code-container img {
+  width: 200px;
+  height: 200px;
+  border: 1px solid #eee;
+  padding: 10px;
+  background: white;
+  margin-bottom: 15px;
+}
+
+.upi-details {
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  text-align: center;
+}
+
+.upi-details p {
+  margin: 8px 0;
+  color: #333;
+}
+
+.instructions {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.qr-code-container p {
+  margin-top: 15px;
+  color: #555;
+}
+
+    .receipt-container {
+      text-align: center;
+    }
+
+    .receipt-header svg {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 10px;
+    }
+
+    .receipt-header h3 {
+      margin: 0 0 20px;
+      color: #4CAF50;
+    }
+
+    .receipt-details {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .receipt-row:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .receipt-row span:first-child {
+      color: #666;
+    }
+
+    .receipt-row span:last-child {
+      font-weight: 500;
+    }
+
+    .receipt-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .download-receipt, .return-home {
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .download-receipt {
+      background: white;
+      border: 1px solid #2e86de;
+      color: #2e86de;
+    }
+
+    .download-receipt:hover {
+      background: #f5f9ff;
+    }
+
+    .return-home {
+      background: #2e86de;
+      color: white;
+      border: none;
+    }
+
+    .return-home:hover {
+      background: #1a73e8;
+    }
+
+    .download-receipt svg {
+      width: 18px;
+      height: 18px;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        padding: 30px 20px;
+      }
+      
+      .image-box {
+        margin-top: 30px;
+      }
+      
+      .image-box img {
+        width: 200px;
+        height: 200px;
+      }
+      
+      .donation-hero-content h1 {
+        font-size: 2.5rem;
+      }
+      
+      .donation-hero-content p {
+        font-size: 1.1rem;
+      }
+      
+      .animal-card {
+        max-width: 100%;
+      }
+      
+      .payment-methods {
+        flex-direction: column;
+      }
+      
+      .progress-steps {
+        padding: 15px 20px;
+      }
+      
+      .step p {
+        display: none;
+      }
+    }
+    
+    /* Updated Footer Styles */
+    .footer {
+      background: #f8f9fa;
+      padding: 40px 0 20px;
+      margin-top: 50px;
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+    
+    .footer-about h3, 
+    .footer-links h3, 
+    .footer-social h3 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+    }
+    
+    .footer-about p {
+      color: #666;
+      line-height: 1.6;
+    }
+    
+    .footer-links ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      color: #2e86de !important;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 4px 0;
+      display: inline-block;
+    }
+
+    .footer-links a:hover {
+      color: #2e86de !important;
+      transform: translateX(3px);
+    }
+
+    .footer-links li a {
+      color: #2c3e50 !important;
+    }
+
+    .footer-links li a:hover {
+      color: #2e86de !important;
+    }
+    
+    .social-icons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-icons a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #e1e1e1;
+      transition: all 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      background: #2e86de;
+      transform: scale(1.1);
+    }
+
+    .social-icons img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e1e1e1;
+      color: #666;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header id="header">
+    <a href="#" class="logo">Animalia</a>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="404error.html">About</a></li>
+      <li><a href="adopt.html">Adoption</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="donate.html" class="active">Donation</a></li>
+    </ul>
+  </header>
+
+  <div class="donation-hero">
+    <div class="donation-hero-content">
+      <h1>Help Save a Life Today</h1>
+      <p>Your donation provides medical care, food, and shelter for animals in need.</p>
+      <a href="#donate" class="hero-cta">Donate Now</a>
+    </div>
+  </div>
+
+  <div class="animals-container">
+    <!-- Animal 1 -->
+    <div class="animal-card">
+      <div class="animal-image-container">
+        <img src="images/d2.png" alt="Luna the dog" class="animal-image active">
+        <img src="images/d.png" alt="Luna's injury" class="animal-image" style="display: none;">
+        <img src="images/d1.png" alt="Luna recovering" class="animal-image" style="display: none;">
+        
+        <div class="image-nav">
+          <button class="nav-btn prev-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          <button class="nav-btn next-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <div class="animal-details">
+        <h3 class="animal-name">Luna</h3>
+        <span class="animal-condition">Severe Leg Injury</span>
+        <p class="animal-description">
+          Found abandoned with a severe leg injury that had become infected. Needs surgery to repair the fracture and prevent permanent damage. Will require several weeks of rehabilitation.
+        </p>
+        
+        <div class="progress-container">
+          <div class="progress-info">
+            <span>Raised: $1,850</span>
+            <span>Goal: $3,200</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 58%"></div>
+          </div>
+        </div>
+        
+        <div class="donation-options">
+          <div class="donation-amount">$25</div>
+          <div class="donation-amount">$50</div>
+          <div class="donation-amount selected">$100</div>
+          <div class="donation-amount">$250</div>
+          <input type="number" class="custom-amount" placeholder="Other amount">
+        </div>
+        <button class="donate-btn">Donate to Luna</button>
+      </div>
+    </div>
+    
+    <!-- Animal 2 -->
+    <div class="animal-card">
+      <div class="animal-image-container">
+        <img src="images/c.png" alt="Oliver the cat" class="animal-image active">
+        <img src="images/c1.png" alt="Oliver's eye condition" class="animal-image" style="display: none;">
+        <img src="images/b1.jpg" alt="Oliver after first treatment" class="animal-image" style="display: none;">
+        
+        <div class="image-nav">
+          <button class="nav-btn prev-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          <button class="nav-btn next-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <div class="animal-details">
+        <h3 class="animal-name">Oliver</h3>
+        <span class="animal-condition">Eye Infection</span>
+        <p class="animal-description">
+          Rescued from a hoarding situation with severe eye infections and malnutrition. Needs specialized treatments and possibly eye surgery if infections don't clear with medication.
+        </p>
+        
+        <div class="progress-container">
+          <div class="progress-info">
+            <span>Raised: $950</span>
+            <span>Goal: $2,500</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 38%"></div>
+          </div>
+        </div>
+        
+        <div class="donation-options">
+          <div class="donation-amount">$25</div>
+          <div class="donation-amount selected">$50</div>
+          <div class="donation-amount">$100</div>
+          <div class="donation-amount">$250</div>
+          <input type="number" class="custom-amount" placeholder="Other amount">
+        </div>
+        <button class="donate-btn">Donate to Oliver</button>
+      </div>
+    </div>
+    
+    <!-- Animal 3 -->
+    <div class="animal-card">
+      <div class="animal-image-container">
+        <img src="images/a.png" alt="Rocky the dog" class="animal-image active">
+        <img src="images/a1.jpg" alt="Rocky's skin condition" class="animal-image" style="display: none;">
+        <img src="images/b1.jpg" alt="Rocky receiving treatment" class="animal-image" style="display: none;">
+        
+        <div class="image-nav">
+          <button class="nav-btn prev-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          <button class="nav-btn next-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <div class="animal-details">
+        <h3 class="animal-name">Rocky</h3>
+        <span class="animal-condition">Severe Skin Disease</span>
+        <p class="animal-description">
+          Found with extreme mange and secondary skin infections causing constant discomfort. Requires intensive medicated baths, antibiotics, and possibly skin grafts for most affected areas.
+        </p>
+        
+        <div class="progress-container">
+          <div class="progress-info">
+            <span>Raised: $2,100</span>
+            <span>Goal: $4,000</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 52%"></div>
+          </div>
+        </div>
+        
+        <div class="donation-options">
+          <div class="donation-amount">$25</div>
+          <div class="donation-amount">$50</div>
+          <div class="donation-amount selected">$100</div>
+          <div class="donation-amount">$250</div>
+          <input type="number" class="custom-amount" placeholder="Other amount">
+        </div>
+        <button class="donate-btn">Donate to Rocky</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="donation-box">
+        <h2>Contribute to change in your community</h2>
+        <p>Help us bring companionship and community back to our users</p>
+        
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="switchTab('monthly')">Monthly</button>
+            <button class="tab-btn" onclick="switchTab('one-off')">One-off</button>
+        </div>
+
+        <div class="donation-options">
+            <input type="number" id="donation-amount" value="10.00" min="1">
+            <div class="amount-buttons">
+              <button onclick="setAmount(10, this)">$10</button>
+              <button onclick="setAmount(30, this)">$30</button>
+              <button onclick="setAmount(50, this)">$50</button>
+              <button onclick="customAmount(this)">Other</button>
+            </div>
+            <br>
+            <label><input type="checkbox" id="monthly-checkbox" checked> Make this donation monthly</label>
+            <button class="donate-btn">Donate</button>
+        </div>
+    </div>
+
+    <div class="image-box">
+        <img src="https://cdn.pixabay.com/photo/2023/08/18/15/02/dog-8198719_640.jpg" alt="Cute Dog">
+    </div>
+  </div>
+
+  <!-- Payment Modal -->
+<div id="paymentModal" class="payment-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Complete Your Donation</h2>
+      <button class="close-modal">&times;</button>
+    </div>
+    
+    <div class="progress-steps">
+      <div class="step active" data-step="1">
+        <span>1</span>
+        <p>Payment Method</p>
+      </div>
+      <div class="step" data-step="2">
+        <span>2</span>
+        <p>Payment Details</p>
+      </div>
+      <div class="step" data-step="3">
+        <span>3</span>
+        <p>Receipt</p>
+      </div>
+      <div class="progress-line"></div>
+    </div>
+    
+    <div class="steps-container">
+      <!-- Step 1: Payment Method -->
+      <div class="step-content active" data-step="1">
+        <h3>Select Payment Method</h3>
+        <div class="payment-methods">
+          <div class="payment-method selected" data-method="card">
+            <img src="https://cdn-icons-png.flaticon.com/512/179/179457.png" alt="Credit Card">
+            <span>Credit/Debit Card</span>
+          </div>
+          <div class="payment-method" data-method="upi">
+            <img src="https://cdn-icons-png.flaticon.com/512/825/825454.png" alt="UPI">
+            <span>UPI Payment</span>
+          </div>
+          <div class="payment-method" data-method="qr">
+            <img src="https://cdn-icons-png.flaticon.com/512/241/241528.png" alt="QR Code">
+            <span>Scan QR Code</span>
+          </div>
+        </div>
+        <button class="next-step">Continue</button>
+      </div>
+      
+      <!-- Step 2: Payment Details -->
+      <div class="step-content" data-step="2">
+        <h3>Enter Payment Details</h3>
+        <div class="card-payment" id="cardPaymentSection">
+          <!-- Card payment form remains the same -->
+        </div>
+        
+        <div class="upi-payment" id="upiPaymentSection" style="display:none;">
+          <div class="form-group">
+            <label for="upiId">Enter UPI ID</label>
+            <input type="text" id="upiId" placeholder="yourname@upi" required>
+          </div>
+          <p class="note">You'll be redirected to your UPI app to complete the payment</p>
+        </div>
+        
+        <div class="qr-payment" id="qrPaymentSection" style="display:none;">
+          <div class="qr-code-container">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=UPI_ID:animalia@upi&amount=100" alt="Donation QR Code">
+            <div class="upi-details">
+              <p><strong>UPI ID:</strong> animalia@upi</p>
+              <p><strong>Phone Number:</strong> +91 9876543210</p>
+            </div>
+            <p class="instructions">Scan the QR code with any UPI app to complete your donation</p>
+          </div>
+        </div>
+        
+        <div class="step-buttons">
+          <button class="prev-step">Back</button>
+          <button class="next-step">Continue</button>
+        </div>
+      </div>
+        
+        <!-- Step 3: Receipt -->
+        <div class="step-content" data-step="3">
+          <div class="receipt-container">
+            <div class="receipt-header">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#4CAF50">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+              <h3>Donation Successful!</h3>
+            </div>
+            
+            <div class="receipt-details">
+              <div class="receipt-row">
+                <span>Amount:</span>
+                <span id="receiptAmount">$100.00</span>
+              </div>
+              <div class="receipt-row">
+                <span>For:</span>
+                <span id="receiptAnimal">Luna's Medical Fund</span>
+              </div>
+              <div class="receipt-row">
+                <span>Transaction ID:</span>
+                <span id="receiptTransaction">TRX-8A9B7C6D</span>
+              </div>
+              <div class="receipt-row">
+                <span>Date:</span>
+                <span id="receiptDate">June 15, 2023</span>
+              </div>
+            </div>
+            
+            <div class="receipt-actions">
+              <button class="download-receipt">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Download Receipt
+              </button>
+              <button class="return-home">Return to Home</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-about">
+        <h3>About Us</h3>
+        <p>We are dedicated to rescuing and rehabilitating animals in need. Join us in making a difference!</p>
+      </div>
+
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="adopt.html">Adoption</a></li>
+          <li><a href="Donation.html">Donate</a></li>
+          <li><a href="contact.html">Volunteer</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-social">
+        <h3>Follow Us</h3>
+        <div class="social-icons">
+          <a href="#"><img src="images/fb.webp" alt="Facebook"></a>
+          <a href="#"><img src="images/insta.png" alt="Instagram"></a>
+          <a href="#"><img src="images/x.webp" alt="Twitter"></a>
+          <a href="#"><img src="images/yt.webp" alt="YouTube"></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 Animal Rescue. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Image navigation for animal cards
+document.querySelectorAll('.animal-card').forEach(card => {
+  const images = card.querySelectorAll('.animal-image');
+  const prevBtn = card.querySelector('.prev-btn');
+  const nextBtn = card.querySelector('.next-btn');
+  let currentIndex = 0;
+  
+  function showImage(index) {
+    images.forEach((img, i) => {
+      img.style.display = i === index ? 'block' : 'none';
+    });
+  }
+  
+  prevBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    showImage(currentIndex);
+  });
+  
+  nextBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % images.length;
+    showImage(currentIndex);
+  });
+});
+
+// Make donation amounts selectable
+document.querySelectorAll('.donation-amount').forEach(button => {
+  button.addEventListener('click', function() {
+    // Remove selected class from all buttons in this container
+    this.parentNode.querySelectorAll('.donation-amount').forEach(btn => {
+      btn.classList.remove('selected');
+    });
+    // Add selected class to clicked button
+    this.classList.add('selected');
+  });
+});
+
+// Animate progress bars when they come into view
+function animateProgressBars() {
+  const progressBars = document.querySelectorAll('.progress-fill');
+  
+  progressBars.forEach(bar => {
+    const rect = bar.getBoundingClientRect();
+    const isVisible = (rect.top <= window.innerHeight && rect.bottom >= 0);
+    
+    if (isVisible && !bar.dataset.animated) {
+      bar.style.width = bar.style.width; // Retrigger animation
+      bar.dataset.animated = 'true';
+    }
+  });
+}
+
+// Run on load and scroll
+window.addEventListener('load', animateProgressBars);
+window.addEventListener('scroll', animateProgressBars);
+
+// Payment Modal Functionality
+const paymentModal = document.getElementById('paymentModal');
+const closeModalButtons = document.querySelectorAll('.close-modal');
+const donateButtons = document.querySelectorAll('.donate-btn');
+const steps = document.querySelectorAll('.step');
+const stepContents = document.querySelectorAll('.step-content');
+const nextStepButtons = document.querySelectorAll('.next-step');
+const prevStepButtons = document.querySelectorAll('.prev-step');
+const paymentMethods = document.querySelectorAll('.payment-method');
+const cardPaymentSection = document.getElementById('cardPaymentSection');
+const upiPaymentSection = document.getElementById('upiPaymentSection');
+const qrPaymentSection = document.getElementById('qrPaymentSection');
+const returnHomeButton = document.querySelector('.return-home');
+const downloadReceiptButton = document.querySelector('.download-receipt');
+
+let currentStep = 1;
+let selectedPaymentMethod = 'card';
+
+// Show payment modal when donate button is clicked
+donateButtons.forEach(button => {
+  button.addEventListener('click', function() {
+    // Get donation amount based on which button was clicked
+    let amount;
+    if (this.classList.contains('donate-btn')) {
+      // Handle main donation box
+      const amountInput = document.getElementById('donation-amount');
+      amount = amountInput.value || '10.00';
+      
+      // Validate amount
+      if (isNaN(amount) || parseFloat(amount) <= 0) {
+        alert('Please enter a valid donation amount');
+        amountInput.focus();
+        return;
+      }
+    } else {
+      // Handle animal card donations
+      const card = this.closest('.animal-card');
+      amount = card.querySelector('.donation-amount.selected')?.textContent || 
+               card.querySelector('.custom-amount').value || '100';
+    }
+    
+    const animal = this.closest('.animal-card') ? 
+                  this.closest('.animal-card').querySelector('.animal-name').textContent : 
+                  'General Animal Fund';
+    
+    // Update receipt details
+    document.getElementById('receiptAmount').textContent = `$${amount}`;
+    document.getElementById('receiptAnimal').textContent = `${animal}'s Medical Fund`;
+    document.getElementById('receiptTransaction').textContent = 'TRX-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+    document.getElementById('receiptDate').textContent = new Date().toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+    
+    // Show payment modal
+    paymentModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    resetSteps();
+  });
+});
+
+// Close modal
+closeModalButtons.forEach(button => {
+  button.addEventListener('click', function() {
+    paymentModal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+    resetSteps();
+  });
+});
+
+// Reset steps to initial state
+function resetSteps() {
+  currentStep = 1;
+  selectedPaymentMethod = 'card';
+  updateSteps();
+  showSelectedPaymentSection();
+  
+  // Reset payment method selection
+  paymentMethods.forEach(m => m.classList.remove('selected'));
+  document.querySelector('.payment-method[data-method="card"]').classList.add('selected');
+}
+
+// Update step display
+function updateSteps() {
+  steps.forEach(step => {
+    if (parseInt(step.dataset.step) <= currentStep) {
+      step.classList.add('active');
+    } else {
+      step.classList.remove('active');
+    }
+  });
+  
+  stepContents.forEach(content => {
+    if (parseInt(content.dataset.step) === currentStep) {
+      content.classList.add('active');
+    } else {
+      content.classList.remove('active');
+    }
+  });
+}
+
+// Show the selected payment section in step 2
+function showSelectedPaymentSection() {
+  // Hide all payment sections first
+  cardPaymentSection.style.display = 'none';
+  upiPaymentSection.style.display = 'none';
+  qrPaymentSection.style.display = 'none';
+  
+  // Show the selected one
+  if (selectedPaymentMethod === 'card') {
+    cardPaymentSection.style.display = 'block';
+  } else if (selectedPaymentMethod === 'upi') {
+    upiPaymentSection.style.display = 'block';
+  } else if (selectedPaymentMethod === 'qr') {
+    qrPaymentSection.style.display = 'block';
+    updateQRCode();
+  }
+}
+
+// Update QR code with current amount
+function updateQRCode() {
+  const amount = document.getElementById('receiptAmount').textContent.replace('$', '');
+  const qrImg = document.querySelector('.qr-code-container img');
+  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=UPI_ID:animalia@upi&amount=${amount}`;
+}
+
+// Validate payment details before proceeding
+function validatePaymentDetails() {
+  if (selectedPaymentMethod === 'upi') {
+    const upiId = document.getElementById('upiId').value;
+    if (!upiId || !upiId.includes('@')) {
+      alert('Please enter a valid UPI ID (e.g., name@upi)');
+      return false;
+    }
+  }
+  return true;
+}
+
+// Next step button
+nextStepButtons.forEach(button => {
+  button.addEventListener('click', function() {
+    if (currentStep === 1) {
+      // Proceed to payment details step
+      currentStep++;
+      updateSteps();
+      showSelectedPaymentSection();
+    } else if (currentStep === 2) {
+      // Validate before proceeding to receipt
+      if (validatePaymentDetails()) {
+        currentStep++;
+        updateSteps();
+        
+        // Process payment based on method
+        if (selectedPaymentMethod === 'upi') {
+          console.log("Processing UPI payment for:", document.getElementById('upiId').value);
+        } else if (selectedPaymentMethod === 'qr') {
+          console.log("QR code payment initiated");
+        } else {
+          console.log("Card payment processed");
+        }
+      }
+    } else {
+      // Payment complete (step 3)
+      console.log("Donation completed successfully");
+    }
+  });
+});
+
+// Previous step button
+prevStepButtons.forEach(button => {
+  button.addEventListener('click', function() {
+    if (currentStep > 1) {
+      currentStep--;
+      updateSteps();
+      showSelectedPaymentSection();
+    }
+  });
+});
+
+// Payment method selection
+paymentMethods.forEach(method => {
+  method.addEventListener('click', function() {
+    paymentMethods.forEach(m => m.classList.remove('selected'));
+    this.classList.add('selected');
+    selectedPaymentMethod = this.dataset.method;
+  });
+});
+
+// Return home button
+returnHomeButton.addEventListener('click', function() {
+  paymentModal.classList.remove('active');
+  document.body.style.overflow = 'auto';
+  resetSteps();
+  // In a real app, you might redirect to home page
+  // window.location.href = 'index.html';
+});
+
+// Download receipt button
+downloadReceiptButton.addEventListener('click', function() {
+  // In a real app, this would generate/download a PDF receipt
+  console.log("Receipt downloaded");
+  alert("Receipt downloaded successfully!");
+});
+
+// Close modal when clicking outside
+paymentModal.addEventListener('click', function(e) {
+  if (e.target === paymentModal) {
+    paymentModal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+    resetSteps();
+  }
+});
+
+// Amount selection functions
+function setAmount(amount, button) {
+  document.getElementById("donation-amount").value = amount;
+  // Update button states
+  const buttons = button.parentNode.querySelectorAll('button');
+  buttons.forEach(btn => btn.classList.remove('selected'));
+  button.classList.add('selected');
+}
+
+function customAmount(button) {
+  const input = document.getElementById("donation-amount");
+  input.focus();
+  // Update button states
+  const buttons = button.parentNode.querySelectorAll('button');
+  buttons.forEach(btn => btn.classList.remove('selected'));
+}
+
+function switchTab(type) {
+  const monthlyCheckbox = document.getElementById("monthly-checkbox");
+  if (type === 'monthly') {
+    monthlyCheckbox.checked = true;
+  } else {
+    monthlyCheckbox.checked = false;
+  }
+
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`.tab-btn:nth-child(${type === 'monthly' ? 1 : 2})`).classList.add('active');
+}
+
+// Initialize amount buttons
+document.querySelectorAll(".amount-buttons button").forEach(button => {
+  button.addEventListener("click", function() {
+    document.querySelectorAll(".amount-buttons button").forEach(btn => 
+      btn.classList.remove("selected")
+    );
+    this.classList.add("selected");
+    if (!this.textContent.includes('Other')) {
+      document.getElementById("donation-amount").value = this.textContent.replace('$', '');
+    }
+  });
+});
+  </script>
+</body>
+</html>

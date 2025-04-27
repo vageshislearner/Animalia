@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adopt a Furry Friend</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="vop.css" rel="stylesheet">
+    <style>
+        /* Main layout styles */
+        .adoption-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .pet-display {
+            flex: 1;
+            min-width: 400px;
+            padding: 30px;
+            background-color: #f8fafc;
+            border-radius: 12px 0 0 12px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-section {
+            flex: 1;
+            min-width: 400px;
+            padding: 30px;
+            background-color: white;
+            border-radius: 0 12px 12px 0;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-content {
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        /* Pet display styles */
+        .pet-image-container {
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .pet-image-main {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+        
+        .pet-info {
+            text-align: center;
+            min-height: 100px;
+        }
+        
+        .pet-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 8px;
+        }
+        
+        .pet-details {
+            color: #4b5563;
+            margin-bottom: 20px;
+        }
+        
+        .pet-thumbnails {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .pet-thumbnail {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .pet-thumbnail:hover, .pet-thumbnail.active {
+            border-color: #3b82f6;
+            transform: translateY(-3px);
+        }
+        
+        /* Form styles */
+        .form-header {
+            margin-bottom: 30px;
+        }
+        
+        .form-header h2 {
+            font-size: 1.8rem;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        
+        .form-header p {
+            color: #6b7280;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .form-btn {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 120px;
+        }
+        
+        .form-btn:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .form-btn.outline {
+            background-color: transparent;
+            border: 1px solid #d1d5db;
+            color: #374151;
+        }
+        
+        .form-btn.outline:hover {
+            background-color: #f3f4f6;
+            box-shadow: none;
+        }
+        
+        /* Form steps */
+        .form-step {
+            display: none;
+            height: 100%;
+            flex-direction: column;
+        }
+        
+        .form-step.active {
+            display: flex;
+        }
+        
+        /* Progress indicator */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #e5e7eb;
+            z-index: 1;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+        }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+        
+        .step.active .step-number {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 14px;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+        
+        .step.active .step-label {
+            color: #3b82f6;
+        }
+        
+        /* Completion screen */
+        .completion-screen {
+            text-align: center;
+            padding: 40px 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .completion-screen h2 {
+            font-size: 2rem;
+            color: #1e40af;
+            margin-bottom: 20px;
+        }
+        
+        .completion-screen p {
+            color: #4b5563;
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+        
+        .completion-icon {
+            font-size: 60px;
+            color: #10b981;
+            margin-bottom: 20px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 900px) {
+            .adoption-container {
+                flex-direction: column;
+            }
+            
+            .pet-display, .form-section {
+                min-width: auto;
+                border-radius: 12px;
+                margin-bottom: 20px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="vop.html" class="logo">AnimaliaAdoption</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="adopt.html" class="nav-link active">Adoption</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                <button class="nav-button" onclick="window.location.href='donate.html'">Donation</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="adoption-container">
+        <div class="pet-display">
+            <div class="pet-image-container">
+                <img src="images/dog1.jpg" alt="Max the Dog" class="pet-image-main" id="mainPetImage">
+            </div>
+            <div class="pet-info">
+                <div class="pet-name" id="petName">Max</div>
+                <div class="pet-details" id="petDetails">2 years old • Labrador Mix • Male</div>
+                <div class="pet-thumbnails">
+                    <img src="images/dog1.jpg" alt="Max" class="pet-thumbnail active" onclick="changePet('dog1.jpg', 'Max', '2 years old • Labrador Mix • Male')">
+                    <img src="images/cat1.jpg" alt="Luna" class="pet-thumbnail" onclick="changePet('cat1.jpg', 'Luna', '1 year old • Domestic Shorthair • Female')">
+                    <img src="images/dog2.jpg" alt="Rocky" class="pet-thumbnail" onclick="changePet('dog2.jpg', 'Rocky', '3 years old • Boxer Mix • Male')">
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <div class="progress-steps">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Your Info</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Home Details</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Complete</div>
+                </div>
+            </div>
+            
+            <div class="form-content">
+                <!-- Step 1: Personal Information -->
+                <div class="form-step active" id="step1">
+                    <div>
+                        <div class="form-header">
+                            <h2>Personal Information</h2>
+                            <p>Tell us about yourself so we can process your application.</p>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="fullName">Full Name</label>
+                                <input type="text" id="fullName" name="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" id="address" name="address" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Do you have experience with pets?</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="experience-yes" name="experience" value="yes" required>
+                                        <label for="experience-yes">Yes</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="experience-no" name="experience" value="no">
+                                        <label for="experience-no">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <div></div> <!-- Empty div for spacing -->
+                        <button type="button" class="form-btn" onclick="nextStep(2)">Next</button>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Home Details -->
+                <div class="form-step" id="step2">
+                    <div>
+                        <div class="form-header">
+                            <h2>Home Details</h2>
+                            <p>Help us understand your living situation to ensure a good match.</p>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="homeType">Type of Home</label>
+                                <select id="homeType" name="homeType" required>
+                                    <option value="">Select...</option>
+                                    <option value="house">House</option>
+                                    <option value="apartment">Apartment</option>
+                                    <option value="condo">Condo</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="familyMembers">Family Members</label>
+                                <input type="number" id="familyMembers" name="familyMembers" min="1" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="yard">Do you have a yard?</label>
+                                <select id="yard" name="yard" required>
+                                    <option value="">Select...</option>
+                                    <option value="yes">Yes, it's fenced</option>
+                                    <option value="yes-open">Yes, but not fenced</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="reason">Why do you want to adopt?</label>
+                                <textarea id="reason" name="reason" required></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="otherPets">Do you have other pets?</label>
+                                <textarea id="otherPets" name="otherPets" placeholder="Please list any current pets you have"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="form-btn outline" onclick="prevStep(1)">Back</button>
+                        <button type="button" class="form-btn" onclick="submitAdoptionForm()">Submit Application</button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Completion -->
+                <div class="form-step" id="step3">
+                    <div class="completion-screen">
+                        <div class="completion-icon">✓</div>
+                        <h2>Application Submitted!</h2>
+                        <p>Thank you for your application to adopt <span id="finalPetName">Max</span>. We've received your information and will contact you within 3 business days to discuss next steps.</p>
+                        <button type="button" class="form-btn" onclick="window.location.href='index.html'">Return Home</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize form
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSteps(1);
+        });
+
+        // Pet selection functionality
+        function changePet(imageSrc, name, details) {
+            const mainImage = document.getElementById('mainPetImage');
+            const petName = document.getElementById('petName');
+            const petDetails = document.getElementById('petDetails');
+            const finalPetName = document.getElementById('finalPetName');
+            
+            // Show loading state
+            mainImage.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                mainImage.src = 'images/' + imageSrc;
+                petName.textContent = name;
+                petDetails.textContent = details;
+                finalPetName.textContent = name;
+                mainImage.style.opacity = '1';
+                
+                // Update active thumbnail
+                document.querySelectorAll('.pet-thumbnail').forEach(thumb => {
+                    thumb.classList.remove('active');
+                });
+                event.target.classList.add('active');
+            }, 200);
+        }
+        
+        // Form steps navigation
+        function updateSteps(step) {
+            // Update progress indicator
+            document.querySelectorAll('.step').forEach(stepEl => {
+                stepEl.classList.remove('active');
+                if (parseInt(stepEl.dataset.step) <= step) {
+                    stepEl.classList.add('active');
+                }
+            });
+            
+            // Update form steps visibility
+            document.querySelectorAll('.form-step').forEach(stepEl => {
+                stepEl.classList.remove('active');
+            });
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            // Scroll to top of form section
+            document.querySelector('.form-content').scrollTo(0, 0);
+        }
+        
+        function nextStep(step) {
+            // Validate current step before proceeding
+            if (step === 2 && !validateStep1()) return;
+            if (step === 3 && !validateStep2()) return;
+            
+            updateSteps(step);
+        }
+        
+        function prevStep(step) {
+            updateSteps(step);
+        }
+        
+        // Simple validation for demo purposes
+        function validateStep1() {
+            const requiredFields = ['fullName', 'email', 'phone', 'address'];
+            let isValid = true;
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#ef4444';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#d1d5db';
+                }
+            });
+            
+            if (!document.querySelector('input[name="experience"]:checked')) {
+                alert('Please select your pet experience level');
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                alert('Please fill in all required fields');
+            }
+            
+            return isValid;
+        }
+        
+        function validateStep2() {
+            const requiredFields = ['homeType', 'familyMembers', 'yard', 'reason'];
+            let isValid = true;
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#ef4444';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#d1d5db';
+                }
+            });
+            
+            if (!isValid) {
+                alert('Please fill in all required fields');
+            }
+            
+            return isValid;
+            
+        }
+        async function submitAdoptionForm() {
+    const petName = document.getElementById('petName').textContent;
+    const fullName = document.getElementById('fullName').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const address = document.getElementById('address').value;
+    const experience = document.querySelector('input[name="experience"]:checked').value;
+    const homeType = document.getElementById('homeType').value;
+    const familyMembers = document.getElementById('familyMembers').value;
+    const yard = document.getElementById('yard').value;
+    const reason = document.getElementById('reason').value;
+    const otherPets = document.getElementById('otherPets').value;
+
+    try {
+        const response = await fetch('http://localhost:5000/submit-adoption', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                petName,
+                fullName,
+                email,
+                phone,
+                address,
+                experience,
+                homeType,
+                familyMembers,
+                yard,
+                reason,
+                otherPets
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            nextStep(3); // Move to success screen
+        } else {
+            alert(`Submission failed: ${data.message}`);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to submit the form. Please try again.');
+    }
+}
+    </script>
+</body>
+</html>

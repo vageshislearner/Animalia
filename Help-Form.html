@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animalia - Report Injured Animal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@300;400;600&family=Fredoka+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        :root {
+            --primary: #4a9b7e;
+            --primary-light: #7ac5aa;
+            --primary-dark: #2a6d56;
+            --secondary: #f8a15f;
+            --light: #f5f5f5;
+            --dark: #333;
+            --gray: #e0e0e0;
+            --danger: #e74c3c;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f9f9f9;
+        }
+        
+        /* Navbar Styles */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            padding: 5px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled .nav-container {
+            padding: 5px 20px;
+        }
+        
+        .logo-text {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--primary-dark);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .navbar.scrolled .logo-text {
+            font-size: 1.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            position: relative;
+            padding: 5px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary);
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-top: -1px;
+        }
+        
+        .tagline {
+            font-weight: 300;
+            font-size: 1.1rem;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .report-form {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 0.8s ease forwards 0.3s;
+            transition: all 0.5s ease;
+        }
+        
+        .report-form.hidden {
+            display: none;
+        }
+        
+        .recent-reports {
+            flex: 1;
+            min-width: 300px;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 0.8s ease forwards 0.5s;
+        }
+        
+        h2 {
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            font-family: 'Open Sans', sans-serif;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 8px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group:focus-within {
+            transform: translateX(5px);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--gray);
+            border-radius: 4px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 155, 126, 0.2);
+            outline: none;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .required:after {
+            content: " *";
+            color: var(--danger);
+        }
+        
+        .image-upload {
+            border: 2px dashed var(--gray);
+            border-radius: 4px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .image-upload:hover {
+            border-color: var(--primary-light);
+            transform: scale(1.01);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .image-upload input {
+            display: none;
+        }
+        
+        .image-upload i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .image-upload:hover i {
+            transform: scale(1.2);
+            color: var(--primary-dark);
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 10px;
+            display: none;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .preview-image:hover {
+            transform: scale(1.02);
+        }
+        
+        #map {
+            height: 250px;
+            width: 100%;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            border: 1px solid var(--gray);
+            transition: all 0.3s ease;
+        }
+        
+        #map:hover {
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+        }
+        
+        .location-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn i {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary:hover i {
+            transform: translateX(3px);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e08a4f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-light);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+        
+        .success-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            animation: fadeIn 0.8s ease;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .success-container.show {
+            display: flex;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            animation: bounce 1s ease infinite, colorChange 4s ease infinite;
+        }
+        
+        .success-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .success-message {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: #555;
+        }
+        
+        .success-details {
+            background-color: #f0f9f5;
+            padding: 15px;
+            border-radius: 8px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .success-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .reports-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .report-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        
+        .report-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .report-image {
+            height: 150px;
+            width: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        
+        .report-card:hover .report-image {
+            transform: scale(1.05);
+        }
+        
+        .report-details {
+            padding: 15px;
+        }
+        
+        .report-type {
+            display: inline-block;
+            background-color: var(--primary-light);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .report-card:hover .report-type {
+            background-color: var(--primary-dark);
+        }
+        
+        .report-description {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .report-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .map-view {
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .map-view:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            background-color: var(--primary-dark);
+            color: white;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        @keyframes colorChange {
+            0% { color: var(--primary); }
+            50% { color: var(--secondary); }
+            100% { color: var(--primary); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .reports-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            .nav-links {
+                margin-top: 15px;
+                gap: 15px;
+            }
+            
+            .success-title {
+                font-size: 2rem;
+            }
+            
+            .success-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo-container">
+                <span class="logo-text">Animalia</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Report</a>
+                <a href="#" class="nav-link">Rescues</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+    
+    <header>
+        <div class="container">
+            <div class="tagline">Helping injured animals one report at a time</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="main-content">
+            <div class="report-form" id="reportForm">
+                <h2>Report Injured Animal</h2>
+                <form id="animalReportForm">
+                    <div class="form-group">
+                        <label for="animalType" class="required">Animal Type</label>
+                        <select id="animalType" required>
+                            <option value="">Select animal type</option>
+                            <option value="dog">Dog</option>
+                            <option value="cat">Cat</option>
+                            <option value="bird">Bird</option>
+                            <option value="rabbit">Rabbit</option>
+                            <option value="squirrel">Squirrel</option>
+                            <option value="raccoon">Raccoon</option>
+                            <option value="deer">Deer</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="injuryDescription" class="required">Description of Injury/Condition</label>
+                        <textarea id="injuryDescription" required placeholder="Please describe the animal's condition in detail"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sightingTime" class="required">Date and Time of Sighting</label>
+                        <input type="datetime-local" id="sightingTime" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reporterContact">Your Contact Information (optional)</label>
+                        <input type="text" id="reporterContact" placeholder="Email or phone number">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="required">Animal Photo</label>
+                        <div class="image-upload" id="imageUpload">
+                            <i class="fas fa-camera"></i>
+                            <p>Click to upload a photo of the animal</p>
+                            <input type="file" id="animalPhoto" accept="image/*" required>
+                            <img id="previewImage" class="preview-image" alt="Preview">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="required">Location</label>
+                        <div id="map"></div>
+                        <div class="location-options">
+                            <button type="button" id="getLocationBtn" class="btn btn-outline">
+                                <i class="fas fa-location-arrow"></i> Use My Location
+                            </button>
+                            <button type="button" id="manualPinBtn" class="btn btn-outline">
+                                <i class="fas fa-map-pin"></i> Pin Location
+                            </button>
+                        </div>
+                        <input type="hidden" id="latitude" required>
+                        <input type="hidden" id="longitude" required>
+                        <input type="text" id="locationDescription" placeholder="Additional location details" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary submit-btn">
+                        <i class="fas fa-paper-plane"></i> Submit Report
+                    </button>
+                </form>
+            </div>
+            
+            <div class="success-container" id="successContainer">
+                <i class="fas fa-heart success-icon"></i>
+                <h1 class="success-title">Thank You for Helping!</h1>
+                <p class="success-message">
+                    Your report has been successfully submitted. Because of compassionate people like you, 
+                    we can help this animal get the care it needs. Our team will review your submission 
+                    and dispatch help if needed.
+                </p>
+                
+                <div class="success-details">
+                    <p><strong>What happens next?</strong></p>
+                    <p>Our local rescue team has been notified and will respond as quickly as possible.</p>
+                </div>
+                
+                <div class="success-actions">
+                    <button class="btn btn-primary" id="newReportBtn">
+                        <i class="fas fa-plus"></i> Submit Another Report
+                    </button>
+                    <button class="btn btn-secondary" id="viewReportsBtn">
+                        <i class="fas fa-list"></i> View Recent Reports
+                    </button>
+                </div>
+            </div>
+            
+            <div class="recent-reports">
+                <h2>Recent Reports</h2>
+                <div class="reports-list" id="reportsList">
+                    <!-- Reports will be loaded here -->
+                </div>
+                
+                <div class="map-view" id="reportsMap">
+                    <!-- Map view of reports will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Animalia. All rights reserved.</p>
+            <p>If you find an animal in immediate danger, please call your local wildlife rescue or animal control.</p>
+        </div>
+    </footer>
+    
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Initialize map
+        const map = L.map('map').setView([0, 0], 2);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        let marker = null;
+        let isManualPinMode = false;
+        
+        // Sample reports data (in a real app, this would come from a database)
+        const sampleReports = [
+            {
+                id: 1,
+                type: 'dog',
+                description: 'Small brown dog with injured front leg, limping near the park entrance.',
+                time: '2023-05-15T14:30',
+                image: 'https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                lat: 40.7128,
+                lng: -74.0060,
+                location: 'Central Park, near 72nd St entrance'
+            },
+            {
+                id: 2,
+                type: 'cat',
+                description: 'Black and white cat with matted fur, seems to have trouble breathing.',
+                time: '2023-05-14T09:15',
+                image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                lat: 34.0522,
+                lng: -118.2437,
+                location: 'Hollywood Blvd near Grauman\'s Chinese Theatre'
+            },
+            {
+                id: 3,
+                type: 'bird',
+                description: 'Pigeon with broken wing, unable to fly, near the fountain.',
+                time: '2023-05-13T17:45',
+                image: 'https://images.unsplash.com/photo-1522926193341-e9ffd686c60f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                lat: 41.8781,
+                lng: -87.6298,
+                location: 'Millennium Park, near the Cloud Gate'
+            }
+        ];
+        
+        // Load sample reports
+        function loadSampleReports() {
+            const reportsList = document.getElementById('reportsList');
+            reportsList.innerHTML = '';
+            
+            sampleReports.forEach(report => {
+                const reportCard = document.createElement('div');
+                reportCard.className = 'report-card';
+                
+                const typeName = report.type.charAt(0).toUpperCase() + report.type.slice(1);
+                const formattedTime = new Date(report.time).toLocaleString();
+                
+                reportCard.innerHTML = `
+                    <img src="${report.image}" alt="${typeName}" class="report-image">
+                    <div class="report-details">
+                        <span class="report-type">${typeName}</span>
+                        <p class="report-description">${report.description}</p>
+                        <div class="report-meta">
+                            <span><i class="fas fa-clock"></i> ${formattedTime}</span>
+                            <span><i class="fas fa-map-marker-alt"></i> ${report.location}</span>
+                        </div>
+                    </div>
+                `;
+                
+                reportsList.appendChild(reportCard);
+            });
+            
+            // Initialize reports map
+            const reportsMap = L.map('reportsMap').setView([39.8283, -98.5795], 4);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(reportsMap);
+            
+            // Add markers for each report
+            sampleReports.forEach(report => {
+                const typeName = report.type.charAt(0).toUpperCase() + report.type.slice(1);
+                L.marker([report.lat, report.lng]).addTo(reportsMap)
+                    .bindPopup(`<b>${typeName}</b><br>${report.description.substring(0, 50)}...<br><small>${new Date(report.time).toLocaleString()}</small>`);
+            });
+        }
+        
+        // Get user's current location
+        document.getElementById('getLocationBtn').addEventListener('click', function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    document.getElementById('latitude').value = lat;
+                    document.getElementById('longitude').value = lng;
+                    
+                    map.setView([lat, lng], 15);
+                    
+                    if (marker) {
+                        map.removeLayer(marker);
+                    }
+                    
+                    marker = L.marker([lat, lng]).addTo(map)
+                        .bindPopup('Animal location')
+                        .openPopup();
+                    
+                    // Reverse geocode to get address (simplified for demo)
+                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const address = data.display_name || 'Current location';
+                            document.getElementById('locationDescription').value = address;
+                        });
+                    
+                    isManualPinMode = false;
+                }, function(error) {
+                    alert('Error getting location: ' + error.message);
+                });
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        });
+        
+        // Enable manual pin mode
+        document.getElementById('manualPinBtn').addEventListener('click', function() {
+            isManualPinMode = true;
+            alert('Click on the map to place a pin at the animal\'s location.');
+        });
+        
+        // Handle map clicks for manual pin placement
+        map.on('click', function(e) {
+            if (isManualPinMode) {
+                const lat = e.latlng.lat;
+                const lng = e.latlng.lng;
+                
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
+                
+                if (marker) {
+                    map.removeLayer(marker);
+                }
+                
+                marker = L.marker([lat, lng]).addTo(map)
+                    .bindPopup('Animal location')
+                    .openPopup();
+                
+                // Reverse geocode to get address (simplified for demo)
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const address = data.display_name || 'Selected location';
+                        document.getElementById('locationDescription').value = address;
+                    });
+            }
+        });
+        
+        // Handle image upload preview
+        document.getElementById('imageUpload').addEventListener('click', function() {
+            document.getElementById('animalPhoto').click();
+        });
+        
+        document.getElementById('animalPhoto').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const preview = document.getElementById('previewImage');
+                    preview.src = event.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Handle form submission
+        document.getElementById('animalReportForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simple validation
+            const requiredFields = ['animalType', 'injuryDescription', 'sightingTime', 'latitude', 'longitude', 'locationDescription'];
+            let isValid = true;
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field.value) {
+                    field.style.borderColor = 'var(--danger)';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '';
+                }
+            });
+            
+            // Check if image was uploaded
+            const imageInput = document.getElementById('animalPhoto');
+            if (!imageInput.files || imageInput.files.length === 0) {
+                document.getElementById('imageUpload').style.borderColor = 'var(--danger)';
+                isValid = false;
+            } else {
+                document.getElementById('imageUpload').style.borderColor = '';
+            }
+            
+            if (!isValid) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Hide form and show success message
+            document.getElementById('reportForm').style.display = 'none';
+            document.getElementById('successContainer').classList.add('show');
+            
+            // Scroll to success message
+            document.getElementById('successContainer').scrollIntoView({ behavior: 'smooth' });
+            
+            // In a real app, you would send this data to a server
+            const formData = {
+                animalType: document.getElementById('animalType').value,
+                injuryDescription: document.getElementById('injuryDescription').value,
+                sightingTime: document.getElementById('sightingTime').value,
+                reporterContact: document.getElementById('reporterContact').value,
+                latitude: document.getElementById('latitude').value,
+                longitude: document.getElementById('longitude').value,
+                locationDescription: document.getElementById('locationDescription').value,
+                // In a real app, you would upload the image to a server
+                image: document.getElementById('previewImage').src || ''
+            };
+            
+            // Store in local storage (simulated)
+            const reports = JSON.parse(localStorage.getItem('animalReports') || '[]');
+            reports.push(formData);
+            localStorage.setItem('animalReports', JSON.stringify(reports));
+        });
+        
+        // Handle new report button
+        document.getElementById('newReportBtn').addEventListener('click', function() {
+            document.getElementById('successContainer').classList.remove('show');
+            document.getElementById('reportForm').style.display = 'block';
+            document.getElementById('animalReportForm').reset();
+            document.getElementById('previewImage').style.display = 'none';
+            
+            if (marker) {
+                map.removeLayer(marker);
+                marker = null;
+            }
+            
+            document.getElementById('reportForm').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Handle view reports button
+        document.getElementById('viewReportsBtn').addEventListener('click', function() {
+            document.getElementById('successContainer').classList.remove('show');
+            document.querySelector('.recent-reports').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Initialize the page
+        window.addEventListener('DOMContentLoaded', function() {
+            loadSampleReports();
+            
+            // Animate form elements sequentially
+            const formGroups = document.querySelectorAll('.form-group');
+            formGroups.forEach((group, index) => {
+                group.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Get in Touch</title>
+    <link rel="stylesheet" href="contact.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="#" class="logo">Animalia</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="vop.html">Volunteer</a>
+            <a href="Help-Form.html" class="active">Help?</a>
+        </div>
+    </nav>
+
+    <!-- Contact Form Section -->
+    <div class="contact-container">
+        <form class="contact-left" id="contactForm">
+            <!-- Your existing form fields -->
+            <input type="hidden" name="access_key" value="79b33eb6-beb1-460e-8522-5e4ce07de529">
+            
+            <div class="form-group">
+                <i class="fas fa-user input-icon"></i>
+                <input type="text" id="name" name="name" placeholder="Your Name" class="contact-inputs" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="email" name="email" placeholder="Your Email" class="contact-inputs" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="fas fa-comment input-icon textarea-icon"></i>
+                <textarea id="message" name="message" placeholder="Your Message" class="contact-inputs" required></textarea>
+            </div>
+            
+            <button type="submit">
+                <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+        </form>
+        <div id="thankYouMessage" style="display: none;">
+            <h2>Thank You!</h2>
+            <p>Your message has been delivered successfully.</p>
+            <p>We'll get back to you soon.</p>
+            <button onclick="location.reload()">Send Another Message</button>
+          </div>
+        
+        <div class="contact-right">
+            <img src="images/contact.png" alt="Contact illustration">
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          const form = this;
+          const submitBtn = form.querySelector('button[type="submit"]');
+          const thankYouMessage = document.getElementById('thankYouMessage');
+          
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+          
+          try {
+            const formData = {
+              name: document.getElementById('name').value,
+              email: document.getElementById('email').value,
+              message: document.getElementById('message').value
+            };
+      
+            const response = await fetch('http://localhost:5000/submit-contact', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            });
+      
+            const result = await response.json();
+            
+            if (!response.ok) throw new Error(result.message || 'Failed to send message');
+      
+            // Hide form and show thank you message
+            form.style.display = 'none';
+            thankYouMessage.style.display = 'block';
+            
+          } catch (error) {
+            console.error('Error:', error);
+            alert('Error: ' + error.message);
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+          }
+        });
+      </script>
+</body>
+</html>

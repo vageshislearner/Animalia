@@ -1,0 +1,140 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Volunteer Registration</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+  <link href="register.css" rel="stylesheet"/>
+ </head>
+ <nav class="navbar">
+    <div class="navbar-container">
+        <div class="navbar-brand">VolunteerHub</div>
+        <div class="navbar-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="adopt.html">Adoption</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </div>
+</nav>
+ <body>
+  <div class="container">
+   <div class="left-section">
+    <img alt="Two hands reaching out to each other" class="image" src="images/mn.png"/>
+    <h2>Empowerment Through Service</h2>
+    <p>Unite, Serve, Impact: Your Chance to Give Back</p>
+   </div>
+   <div class="right-section">
+    <h2>Volunteer Registration</h2>
+    <p>Thank you for your interest in volunteering with us! Please fill out the form below to sign up.</p>
+    <form id="registerForm">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter" required/>
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="email" name="email" placeholder="Example@gmail.com" required/>
+            </div>
+        </div>
+    
+        <div class="form-row">
+            <div class="form-group">
+                <label>Phone Number:</label>
+                <div class="phone-input">
+                    <select id="country-code">
+                        <option value="+91">IN (+91)</option>
+                        <option value="+1">US (+1)</option>
+                        <option value="+44">UK (+44)</option>
+                        <option value="+1">CA (+1)</option>
+                        <option value="+61">AU (+61)</option>
+                        <option value="+33">FR (+33)</option>
+                        <option value="+49">DE (+49)</option>
+                        <option value="+81">JP (+81)</option>
+                    </select>
+                    <input id="phone-number" name="phone" type="text" placeholder="+91 12345 67890" required/>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Availability:</label>
+                <select id="availability" name="availability" required>
+                    <option>Select</option>
+                    <option>Weekdays</option>
+                    <option>Weekends</option>
+                    <option>Morning Shifts</option>
+                    <option>Evening Shifts</option>
+                    <option>Flexible</option>
+                </select>
+            </div>
+        </div>
+        
+        
+        <div class="form-row">
+            <div class="form-group">
+                <div class="checkbox-container">
+                    <input type="checkbox" id="event-setup"/>
+                    <label for="event-setup">Rescuer</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox-container">
+                    <input type="checkbox" id="activity-coordinator"/>
+                    <label for="activity-coordinator">Caretaker</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <div class="checkbox-container">
+                    <input type="checkbox" id="registration-desk"/>
+                    <label for="registration-desk">Fosterer</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox-container">
+                    <input type="checkbox" id="cleanup-crew"/>
+                    <label for="cleanup-crew">Trainer</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <div class="checkbox-container">
+                    <input type="checkbox" id="food-service"/>
+                    <label for="food-service">Food Service</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox-container">
+                    <input type="checkbox" id="other"/>
+                    <label for="other">Other</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label><b>Additional Comments/Questions:</b></label>
+            <textarea id="comments" name="comments" placeholder="Add Text"></textarea>
+        </div>
+        <div class="form-group">
+            <label class="terms">
+                <input type="checkbox" id="terms" name="terms" required/>
+                I have read and agree to the terms and conditions.
+            </label>
+        </div>
+    
+        <div class="form-actions">
+            <button class="cancel-btn" type="button">Cancel</button>
+            <button class="submit-btn" type="submit">Submit</button>
+        </div>
+    </form>
+   </div>
+  </div>
+  <script src="register.js"defer></script>
+ </body>
+</html>

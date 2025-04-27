@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adopt a Friend</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* ----- Variables ----- */
+        :root {
+            --color-primary: #2e7d32;
+            --color-secondary: #81c784;
+            --color-highlight: #ff6b6b;
+            --color-bg: #e8f5e9;
+            --color-text: #333;
+            --color-nav: #006f3c;
+            --color-card: #ffffff;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* ----- Global ----- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: "Raleway", sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+        }
+
+        h3 {
+            font-size: 0.9em;
+            letter-spacing: 1.2px;
+            color: var(--color-secondary);
+            text-transform: uppercase;
+            margin-bottom: 0.5em;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* ----- Navbar ----- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--color-nav);
+            padding: 15px 30px;
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: var(--transition);
+        }
+
+        .navbar .logo {
+            font-family: 'Pacifico', cursive;
+            font-size: 1.8em;
+            font-weight: normal;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1em;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .navbar ul li a:hover {
+            color: var(--color-highlight);
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* ----- Product Section ----- */
+        .products-container {
+            position: relative;
+            min-height: 100vh;
+            padding-top: 80px;
+            padding-bottom: 60px;
+            overflow: hidden;
+        }
+
+        .product {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            margin: 2em auto;
+            padding: 2em;
+            max-width: 900px;
+            background-color: var(--color-card);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            width: 90%;
+        }
+
+        .product.active {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+            z-index: 10;
+        }
+
+        .product.next {
+            transform: translateX(calc(-50% + 100px)) scale(0.9);
+            opacity: 0.5;
+            z-index: 5;
+        }
+
+        .product.prev {
+            transform: translateX(calc(-50% - 100px)) scale(0.9);
+            opacity: 0.5;
+            z-index: 5;
+        }
+
+        /* ----- Photo Section ----- */
+        .product__photo {
+            position: relative;
+            padding: 2em;
+        }
+
+        .photo-container {
+            display: grid;
+            grid-template-rows: 1fr;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            box-shadow: 4px 4px 25px -2px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .photo-main {
+            border-radius: 10px 10px 0 0;
+            background: radial-gradient(circle, #e5f89e, #96e001);
+            position: relative;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .controls {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+            z-index: 2;
+        }
+
+        .controls i {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: var(--color-nav);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .controls i:hover {
+            background-color: white;
+            transform: scale(1.1);
+        }
+
+        .photo-main img {
+            max-height: 90%;
+            filter: drop-shadow(5px 10px 15px rgba(0, 0, 0, 0.3));
+            transition: transform 0.5s ease;
+        }
+
+        .product.active .photo-main img {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* ----- Informations Section ----- */
+        .product__info {
+            padding: 2em;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .title h1 {
+            margin-bottom: 0.2em;
+            color: var(--color-nav);
+            font-size: 2.2em;
+            font-weight: 800;
+        }
+
+        .title span {
+            font-size: 0.9em;
+            color: var(--color-secondary);
+            font-weight: 600;
+        }
+
+        .price {
+            margin: 1.2em 0;
+            color: var(--color-highlight);
+            font-size: 1.4em;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .price span {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-left: 5px;
+        }
+
+        .adoption-amount {
+            font-size: 0.9em;
+            color: var(--color-secondary);
+            margin-top: -1em;
+            margin-bottom: 1.5em;
+            font-style: italic;
+        }
+
+        .description {
+            margin: 1.5em 0;
+        }
+
+        .description ul {
+            list-style: none;
+        }
+
+        .description li {
+            margin-bottom: 0.6em;
+            position: relative;
+            padding-left: 1.5em;
+            font-size: 0.95em;
+        }
+
+        .description li::before {
+            content: "•";
+            color: var(--color-highlight);
+            font-size: 1.5em;
+            position: absolute;
+            left: 0;
+            top: -0.2em;
+        }
+
+        .buy--btn {
+            padding: 1.2em 2.5em;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: white;
+            background-color: var(--color-highlight);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            cursor: pointer;
+            transition: var(--transition);
+            align-self: flex-start;
+            margin-top: 1em;
+            text-transform: uppercase;
+        }
+
+        .buy--btn:hover {
+            background-color: #ff5252;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        .buy--btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* ----- Navigation Buttons ----- */
+        .nav-buttons {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        .nav-buttons button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            background-color: var(--color-nav);
+            color: white;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1em;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-buttons button:hover:not(:disabled) {
+            background-color: var(--color-highlight);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .nav-buttons button:disabled {
+            background-color: #bdbdbd;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* ----- Footer ----- */
+        footer {
+            text-align: center;
+            padding: 1.5em;
+            background-color: var(--color-nav);
+            color: white;
+            margin-top: 60px;
+        }
+
+        footer p {
+            font-size: 0.9em;
+        }
+
+        /* ----- Responsive Design ----- */
+        @media (max-width: 768px) {
+            .product {
+                grid-template-columns: 1fr;
+                width: 95%;
+                padding: 1.5em;
+            }
+            
+            .product__photo {
+                padding: 1em;
+            }
+            
+            .photo-main {
+                height: 250px;
+            }
+            
+            .title h1 {
+                font-size: 1.8em;
+            }
+            
+            .nav-buttons {
+                bottom: 20px;
+            }
+            
+            .nav-buttons button {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            .navbar .logo {
+                margin-bottom: 10px;
+            }
+            
+            .navbar ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+            
+            .photo-main {
+                height: 200px;
+            }
+            
+            .product__info {
+                padding: 1em;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+                bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Animalia</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="vop.html">Volunteer</a></li>
+            <li><a href="donate.html">Donation</a></li>
+        </ul>
+    </nav>
+
+    <div class="products-container">
+        <!-- 1st Animal -->
+        <section class="product active">
+            <div class="product__photo">
+                <div class="photo-container">
+                    <div class="photo-main">
+                        <div class="controls">
+                            <i class="material-icons">share</i>
+                            <i class="material-icons">favorite</i>
+                        </div>
+                        <img src="images/d1.png" alt="Bella the dog">
+                    </div>
+                </div>
+            </div>
+            <div class="product__info">
+                <div class="title">
+                    <h1>Bella</h1>
+                    <span>Breed: Golden Retriever</span>
+                </div>
+                <div class="price">
+                    ₹Rs <span>790/-</span>
+                </div>
+                <div class="adoption-amount">(Adoption Amount)</div>
+                <div class="description">
+                    <h3>PERSONALITY</h3>
+                    <ul>
+                        <li>Loves walks and outdoor fun</li>
+                        <li>Friendly and social with everyone</li>
+                        <li>Calm and affectionate</li>
+                        <li>Good with other pets and kids</li>
+                    </ul>
+                </div>
+                <button class="buy--btn" onclick="window.location.href='Adopt-Form.html'">
+                    <i class="material-icons" style="font-size: 1.2em; vertical-align: middle;">pets</i> ADOPT NOW
+                </button>
+            </div>
+        </section>
+
+        <!-- 2nd Animal -->
+        <section class="product">
+            <div class="product__photo">
+                <div class="photo-container">
+                    <div class="photo-main">
+                        <div class="controls">
+                            <i class="material-icons">share</i>
+                            <i class="material-icons">favorite</i>
+                        </div>
+                        <img src="images/d2.png" alt="Max the dog">
+                    </div>
+                </div>
+            </div>
+            <div class="product__info">
+                <div class="title">
+                    <h1>Max</h1>
+                    <span>Breed: Labrador</span>
+                </div>
+                <div class="price">
+                    ₹Rs <span>850/-</span>
+                </div>
+                <div class="adoption-amount">(Adoption Amount)</div>
+                <div class="description">
+                    <h3>PERSONALITY</h3>
+                    <ul>
+                        <li>Energetic and playful</li>
+                        <li>Great with families</li>
+                        <li>Highly trainable</li>
+                        <li>Enjoys swimming and fetching</li>
+                    </ul>
+                </div>
+                <button class="buy--btn" onclick="window.location.href='Adopt-Form.html'">
+                    <i class="material-icons" style="font-size: 1.2em; vertical-align: middle;">pets</i> ADOPT NOW
+                </button>
+            </div>
+        </section>
+
+        <!-- 3rd Animal -->
+        <section class="product">
+            <div class="product__photo">
+                <div class="photo-container">
+                    <div class="photo-main">
+                        <div class="controls">
+                            <i class="material-icons">share</i>
+                            <i class="material-icons">favorite</i>
+                        </div>
+                        <img src="images/c1.png" alt="Milo the cat">
+                    </div>
+                </div>
+            </div>
+            <div class="product__info">
+                <div class="title">
+                    <h1>Milo</h1>
+                    <span>Breed: Persian</span>
+                </div>
+                <div class="price">
+                    ₹Rs <span>500/-</span>
+                </div>
+                <div class="adoption-amount">(Adoption Amount)</div>
+                <div class="description">
+                    <h3>PERSONALITY</h3>
+                    <ul>
+                        <li>Enjoys lounging and cozy spots</li>
+                        <li>Independent, but loves attention</li>
+                        <li>Playful and curious</li>
+                        <li>Calm, cuddly, and enjoys alone time</li>
+                    </ul>
+                </div>
+                <button class="buy--btn" onclick="window.location.href='Adopt-Form.html'">
+                    <i class="material-icons" style="font-size: 1.2em; vertical-align: middle;">pets</i> ADOPT NOW
+                </button>
+            </div>
+        </section>
+
+        <!-- 4th Animal -->
+        <section class="product">
+            <div class="product__photo">
+                <div class="photo-container">
+                    <div class="photo-main">
+                        <div class="controls">
+                            <i class="material-icons">share</i>
+                            <i class="material-icons">favorite</i>
+                        </div>
+                        <img src="images/r1.png" alt="Bunny the rabbit">
+                    </div>
+                </div>
+            </div>
+            <div class="product__info">
+                <div class="title">
+                    <h1>Bunny</h1>
+                    <span>Breed: Himalayan</span>
+                </div>
+                <div class="price">
+                    ₹Rs <span>700/-</span>
+                </div>
+                <div class="adoption-amount">(Adoption Amount)</div>
+                <div class="description">
+                    <h3>PERSONALITY</h3>
+                    <ul>
+                        <li>Playful and energetic</li>
+                        <li>Friendly and social with people</li>
+                        <li>Intelligent and curious</li>
+                        <li>Enjoys hopping and exploring</li>
+                    </ul>
+                </div>
+                <button class="buy--btn" onclick="window.location.href='Adopt-Form.html'">
+                    <i class="material-icons" style="font-size: 1.2em; vertical-align: middle;">pets</i> ADOPT NOW
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <div class="nav-buttons">
+        <button id="prevBtn" disabled>
+            <i class="material-icons">chevron_left</i> Previous
+        </button>
+        <button id="nextBtn">
+            Next <i class="material-icons">chevron_right</i>
+        </button>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Animalia. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const products = document.querySelectorAll('.product');
+        let currentIndex = 0;
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        // Initialize
+        showProduct(currentIndex);
+        updateButtonState();
+
+        // Navigation event listeners
+        nextBtn.addEventListener('click', showNextProduct);
+        prevBtn.addEventListener('click', showPrevProduct);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                showNextProduct();
+            } else if (e.key === 'ArrowLeft') {
+                showPrevProduct();
+            }
+        });
+
+        function showNextProduct() {
+            if (currentIndex < products.length - 1) {
+                currentIndex++;
+                showProduct(currentIndex);
+                updateButtonState();
+            }
+        }
+
+        function showPrevProduct() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                showProduct(currentIndex);
+                updateButtonState();
+            }
+        }
+
+        function showProduct(index) {
+            // Remove all active classes
+            products.forEach(product => {
+                product.classList.remove('active', 'prev', 'next');
+            });
+
+            // Set current product
+            products[index].classList.add('active');
+
+            // Set previous product if exists
+            if (index > 0) {
+                products[index - 1].classList.add('prev');
+            }
+
+            // Set next product if exists
+            if (index < products.length - 1) {
+                products[index + 1].classList.add('next');
+            }
+        }
+
+        function updateButtonState() {
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === products.length - 1;
+        }
+    </script>
+</body>
+</html>

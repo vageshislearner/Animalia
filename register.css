@@ -1,0 +1,265 @@
+/* styles.css */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f3f4f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 30px;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #6d28d9;
+    color: white;
+    padding: 16px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.navbar-brand {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.navbar-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 24px;
+    font-weight: 500;
+}
+
+.navbar-links a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: flex;
+    max-width: 900px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.left-section {
+    background-color: #e5e7eb;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+}
+
+.left-section .image {
+    margin-bottom: 16px;
+}
+
+.left-section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+}
+
+.left-section p {
+    color: #4b5563;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.right-section {
+    padding: 32px;
+    width: 50%;
+}
+
+.right-section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #6d28d9;
+    margin-bottom: 16px;
+}
+
+.right-section p {
+    color: #4b5563;
+    margin-bottom: 24px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    margin-top: 4px;
+    resize: none;
+}
+
+/* Form Row - To Align Name & Email Side by Side */
+/* Form Row - To Align Fields Side by Side */
+/* Reduce space between form fields */
+.form-row {
+    display: flex;
+    gap: 12px; /* Decrease spacing between columns */
+    margin-bottom: 8px; /* Reduce space below rows */
+}
+
+/* Reduce spacing inside form-group */
+.form-group {
+    margin-bottom: 4px; /* Decrease vertical spacing */
+}
+
+
+/* Ensure each form-group in the row takes equal space */
+.form-row .form-group {
+    flex: 1;
+}
+
+/* Adjust phone input layout */
+.phone-input {
+    display: flex;
+    align-items: center;
+}
+
+.phone-input select {
+    width: 60px;
+    padding: 10px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+    background-color: #f9fafb;
+}
+
+.phone-input input {
+    padding: 10px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    flex: 1;
+}
+
+
+
+.phone-input {
+    display: flex;
+}
+
+.phone-input select {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.phone-input input {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    flex: 1;
+}
+
+/* Form Row - Align Checkboxes Like Phone & Availability */
+.form-row {
+    display: flex;
+    gap: 16px;
+}
+
+/* Ensure each checkbox-container takes equal space */
+.form-row .form-group {
+    flex: 1;
+}
+
+/* Align checkboxes properly */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between checkbox and label */
+}
+
+/* Consistent checkbox size */
+.checkbox-container input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    margin: 0;
+}
+
+
+/* Terms & Conditions - Smaller Text */
+.terms {
+    display: flex;
+    align-items: center;
+    font-size: 14px; /* Reduce text size */
+    color: #4b5563; /* Slightly muted color */
+}
+
+.terms input {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+}
+
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+}
+
+.cancel-btn {
+    background-color: #d1d5db;
+    color: #374151;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    width: 170px;
+}
+
+.submit-btn {
+    background-color: #6d28d9;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    width: 170px;
+}
+
+.disclaimer {
+    color: #4b5563;
+    font-size: 14px;
+    margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .left-section,
+    .right-section {
+        width: 100%;
+    }
+}
